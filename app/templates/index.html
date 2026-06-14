@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Корпоративные мероприятия АФФА{% endblock %}
+
+{% block content %}
+<div class="page-intro">
+    <h1>Корпоративные мероприятия</h1>
+    <p class="lead">Семинары, презентации, тест-драйвы и встречи для дилеров и партнёров ООО Группа АФФА</p>
+</div>
+
+<div class="page-header">
+    <form method="get" class="search-form">
+        <input type="text" name="q" value="{{ search or '' }}" placeholder="Поиск по названию или описанию">
+        <button type="submit" class="btn">Найти</button>
+    </form>
+</div>
+
+{% if not events %}
+    <div class="empty-state">
+        <p>Пока нет ни одного предстоящего мероприятия.</p>
+    </div>
+{% else %}
+    <div class="event-grid">
+        {% for e in events %}
+        <article class="event-card">
+            <div class="event-card-body">
+                <h3><a href="{{ url_for('public.event_detail', event_id=e.event_id) }}">{{ e.title }}</a></h3>
+                <p class="event-meta">
+                    <span>{{ e.starts_at | dt }}</span>
+                    {% if e.venue_name %}<span>· {{ e.venue_name }}</span>{% endif %}
+                </p>
+                <p class="event-desc">{{ (e.description or '')[:140] }}{% if e.description and e.description|length > 140 %}…{% endif %}</p>
+                <div class="event-card-footer">
+                    <span class="price">
+                        {% if e.base_price > 0 %}{{ e.base_price | money }}{% else %}Без оплаты{% endif %}
+                    </span>
+                    <span class="seats">
+                        Свободно: {{ e.total_capacity - e.sold_count }} из {{ e.total_capacity }}
+                    </span>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
