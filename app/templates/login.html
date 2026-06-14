@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<div class="auth-form">
+    <h1>Вход в систему</h1>
+    <form method="post">
+        <label>
+            Email
+            <input type="email" name="email" required autofocus>
+        </label>
+        <label>
+            Пароль
+            <input type="password" name="password" required>
+        </label>
+        <button type="submit" class="btn btn-primary btn-lg">Войти</button>
+    </form>
+    <p class="auth-alt">
+        Нет аккаунта? <a href="{{ url_for('auth.register') }}">Зарегистрироваться</a>
+    </p>
+</div>
+{% endblock %}
