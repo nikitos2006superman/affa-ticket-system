@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Контроль входа{% endblock %}
+
+{% block content %}
+<h1>Контроль входа</h1>
+<p>Введите код билета (UUID из QR-кода) или вставьте его в поле ниже.</p>
+
+<form method="post" id="check-in-form" class="check-in-form">
+    <input type="text" name="ticket_code" id="ticket_code" placeholder="00000000-0000-0000-0000-000000000000"
+           required autofocus pattern="[0-9a-fA-F\-]{36}">
+    <button type="submit" class="btn btn-primary btn-lg">Отметить</button>
+</form>
+
+<div id="check-in-result" class="check-in-result">
+    {% if result %}
+    <div class="result-success">
+        <h3>✓ Билет принят</h3>
+        <div><strong>Мероприятие:</strong> {{ result.event_title }}</div>
+        <div><strong>Владелец:</strong> {{ result.holder_name }}</div>
+        <div><strong>Время отметки:</strong> {{ result.checked_at | dt('%H:%M:%S') }}</div>
+    </div>
+    {% endif %}
+    {% if error %}
+    <div class="result-error">
+        <h3>✗ Ошибка</h3>
+        <div>{{ error }}</div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/check_in.js') }}"></script>
+{% endblock %}
