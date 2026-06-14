@@ -1,0 +1,415 @@
+/* ========== Базовые ========== */
+* { box-sizing: border-box; }
+
+:root {
+    --c-primary: #c8102e;
+    --c-primary-dark: #95001f;
+    --c-bg: #f5f6fa;
+    --c-card: #ffffff;
+    --c-border: #e1e4eb;
+    --c-text: #1f2733;
+    --c-text-soft: #6b7280;
+    --c-success: #16a34a;
+    --c-error:   #dc2626;
+    --c-warning: #d97706;
+    --c-info:    #0369a1;
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--c-text);
+    background: var(--c-bg);
+    line-height: 1.5;
+}
+
+a { color: var(--c-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+main.container {
+    padding-top: 24px;
+    padding-bottom: 48px;
+    min-height: calc(100vh - 180px);
+}
+
+/* ========== Шапка ========== */
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--c-border);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.topbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+}
+.logo {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--c-text);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    text-decoration: none;
+}
+.logo:hover { text-decoration: none; }
+.logo-mark {
+    background: var(--c-primary);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-size: 16px;
+}
+.logo-sub {
+    color: var(--c-text-soft);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.page-intro {
+    margin: 8px 0 24px;
+}
+.page-intro h1 { margin: 0 0 6px; }
+.page-intro .lead {
+    color: var(--c-text-soft);
+    font-size: 15px;
+    margin: 0;
+    max-width: 640px;
+}
+.auth-hint {
+    color: var(--c-text-soft);
+    font-size: 13px;
+    background: #f8f9fc;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    border-left: 3px solid var(--c-primary);
+    margin-bottom: 16px;
+}
+.field-hint {
+    display: block;
+    color: var(--c-text-soft);
+    font-size: 12px;
+    margin-top: 2px;
+}
+.topnav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.topnav a { color: var(--c-text-soft); }
+.topnav a:hover { color: var(--c-text); text-decoration: none; }
+.user-pill {
+    background: #eef2f7;
+    color: var(--c-text);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+/* ========== Кнопки ========== */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid var(--c-border);
+    background: #fff;
+    color: var(--c-text);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background .12s ease, border-color .12s ease;
+}
+.btn:hover { background: #f8f9fc; text-decoration: none; }
+.btn-primary {
+    background: var(--c-primary);
+    color: #fff;
+    border-color: var(--c-primary);
+}
+.btn-primary:hover { background: var(--c-primary-dark); border-color: var(--c-primary-dark); }
+.btn-lg { padding: 12px 24px; font-size: 15px; }
+.btn-sm { padding: 5px 10px; font-size: 13px; }
+.btn-danger { background: var(--c-error); color: #fff; border-color: var(--c-error); }
+.btn-danger:hover { filter: brightness(.92); }
+
+.link-btn {
+    background: none; border: none; padding: 0; cursor: pointer;
+    color: var(--c-primary); font-size: inherit; font-family: inherit;
+}
+.link-btn:hover { text-decoration: underline; }
+.link-danger { color: var(--c-error); }
+
+/* ========== Flash ========== */
+.flashes { margin-bottom: 16px; }
+.flash {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    border-left: 4px solid;
+    background: #fff;
+}
+.flash-success { border-color: var(--c-success); color: #14532d; background: #f0fdf4; }
+.flash-error   { border-color: var(--c-error);   color: #7f1d1d; background: #fef2f2; }
+.flash-info    { border-color: var(--c-info);    color: #0c4a6e; background: #f0f9ff; }
+.flash-warning { border-color: var(--c-warning); color: #78350f; background: #fffbeb; }
+
+/* ========== Карточки событий ========== */
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+.event-card {
+    background: var(--c-card);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.event-card-body { padding: 16px; }
+.event-card h3 { margin: 0 0 8px; font-size: 17px; }
+.event-card h3 a { color: var(--c-text); }
+.event-meta { color: var(--c-text-soft); font-size: 13px; margin: 0 0 8px; }
+.event-desc { color: var(--c-text); font-size: 14px; min-height: 42px; }
+.event-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--c-border);
+    font-size: 14px;
+}
+.price { font-weight: 600; }
+.seats { color: var(--c-text-soft); font-size: 13px; }
+
+/* ========== Детали события ========== */
+.event-detail { background: #fff; padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow); }
+.back-link { color: var(--c-text-soft); display: inline-block; margin-bottom: 12px; }
+.event-meta-large {
+    display: grid;
+    gap: 8px;
+    background: #f8f9fc;
+    padding: 16px;
+    border-radius: var(--radius);
+    margin: 16px 0;
+}
+.event-description { margin: 24px 0; }
+.buy-form { margin-top: 24px; display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.buy-form select { padding: 8px; font: inherit; border: 1px solid var(--c-border); border-radius: var(--radius); }
+.info-block { padding: 16px; background: #f8f9fc; border-radius: var(--radius); margin-top: 16px; color: var(--c-text-soft); }
+
+/* ========== Билеты ========== */
+.ticket-list { display: grid; gap: 16px; }
+.ticket-card {
+    display: flex;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--c-border);
+    overflow: hidden;
+}
+.ticket-info { flex: 1; padding: 20px; }
+.ticket-info h3 { margin: 0 0 8px; }
+.ticket-meta { color: var(--c-text-soft); font-size: 13px; margin-bottom: 12px; }
+.ticket-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+.status-active    { background: #dcfce7; color: #14532d; }
+.status-used      { background: #e0e7ff; color: #1e3a8a; }
+.status-cancelled { background: #fee2e2; color: #7f1d1d; }
+.ticket-code { font-size: 12px; color: var(--c-text-soft); margin-bottom: 12px; }
+.ticket-code code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+.ticket-qr {
+    background: #f8f9fc;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--c-border);
+    min-width: 180px;
+}
+.ticket-qr img { width: 140px; height: 140px; }
+.ticket-qr small { color: var(--c-text-soft); margin-top: 6px; font-size: 11px; }
+
+/* ========== Формы ========== */
+.auth-form, .form-grid {
+    background: #fff;
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.auth-form { max-width: 420px; margin: 24px auto; }
+.auth-form h1 { margin-top: 0; }
+.auth-form label,
+.form-grid label {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--c-text-soft);
+}
+.auth-form input,
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 9px 12px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    font: inherit;
+    color: var(--c-text);
+    background: #fff;
+}
+.auth-alt { color: var(--c-text-soft); font-size: 14px; margin-top: 16px; }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+.form-actions { display: flex; gap: 12px; }
+
+/* ========== Таблицы ========== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--c-border);
+}
+.data-table th, .data-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--c-border);
+    font-size: 14px;
+}
+.data-table th {
+    background: #f8f9fc;
+    font-weight: 600;
+    color: var(--c-text-soft);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: .04em;
+}
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: #fafbfd; }
+.row-actions { white-space: nowrap; }
+.row-actions a, .row-actions form { margin-right: 8px; }
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+}
+.badge-published { background: #dcfce7; color: #14532d; }
+.badge-draft     { background: #f3f4f6; color: #4b5563; }
+.badge-cancelled { background: #fee2e2; color: #7f1d1d; }
+.badge-finished  { background: #e0e7ff; color: #1e3a8a; }
+
+/* ========== Дашборд ========== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+}
+.stat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--c-border);
+}
+.stat-value { font-size: 28px; font-weight: 700; color: var(--c-primary); }
+.stat-label { color: var(--c-text-soft); font-size: 13px; margin-top: 4px; }
+
+.dashboard-section { margin: 32px 0; }
+.dashboard-section h2 { font-size: 18px; }
+.quick-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ========== Контроль входа ========== */
+.check-in-form {
+    display: flex;
+    gap: 12px;
+    margin: 24px 0;
+}
+.check-in-form input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    font-family: monospace;
+    border: 2px solid var(--c-border);
+    border-radius: var(--radius);
+}
+.check-in-result { margin-top: 24px; }
+.result-success, .result-error {
+    padding: 20px;
+    border-radius: var(--radius);
+    border-left: 4px solid;
+}
+.result-success { background: #f0fdf4; border-color: var(--c-success); }
+.result-error   { background: #fef2f2; border-color: var(--c-error); }
+.result-success h3, .result-error h3 { margin-top: 0; }
+
+/* ========== Отчёты ========== */
+.report-section { margin: 32px 0; }
+.report-section h2 { font-size: 18px; }
+
+/* ========== Прочее ========== */
+.empty-state {
+    background: #fff;
+    padding: 32px;
+    text-align: center;
+    border-radius: var(--radius);
+    color: var(--c-text-soft);
+    border: 1px dashed var(--c-border);
+}
+
+.site-footer {
+    background: #fff;
+    border-top: 1px solid var(--c-border);
+    padding: 16px 0;
+    color: var(--c-text-soft);
+    font-size: 13px;
+    text-align: center;
+}
+.footer-contacts {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--c-text-soft);
+}
+
+@media (max-width: 700px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .topnav { gap: 8px; font-size: 13px; }
+    .topnav .btn { padding: 4px 10px; }
+    .ticket-card { flex-direction: column; }
+    .ticket-qr { border-left: none; border-top: 1px solid var(--c-border); }
+    .data-table { display: block; overflow-x: auto; }
+}
