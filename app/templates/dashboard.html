@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Панель управления{% endblock %}
+
+{% block content %}
+<h1>Панель управления</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.upcoming_events }}</div>
+        <div class="stat-label">Предстоящих событий</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_tickets }}</div>
+        <div class="stat-label">Активных и использованных билетов</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_users }}</div>
+        <div class="stat-label">Зарегистрированных пользователей</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_revenue | money }}</div>
+        <div class="stat-label">Общая выручка</div>
+    </div>
+</div>
+
+<section class="dashboard-section">
+    <h2>Выручка за последние 14 дней</h2>
+    {% if revenue %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Билетов</th>
+                <th>Уник. покупателей</th>
+                <th>Чистая выручка</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in revenue %}
+            <tr>
+                <td>{{ r.sale_date }}</td>
+                <td>{{ r.tickets_sold }}</td>
+                <td>{{ r.unique_buyers }}</td>
+                <td>{{ r.net_revenue | money }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><p>Пока нет данных по продажам.</p></div>
+    {% endif %}
+</section>
+
+<section class="dashboard-section">
+    <h2>Быстрые действия</h2>
+    <div class="quick-actions">
+        <a href="{{ url_for('admin.event_create') }}" class="btn btn-primary">Создать мероприятие</a>
+        <a href="{{ url_for('admin.events_list') }}" class="btn">Все события</a>
+        <a href="{{ url_for('admin.check_in') }}" class="btn">Контроль входа</a>
+        <a href="{{ url_for('admin.reports') }}" class="btn">Отчёты</a>
+    </div>
+</section>
+{% endblock %}
