@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block title %}Отчёты{% endblock %}
+
+{% block content %}
+<h1>Отчёты</h1>
+
+<section class="report-section">
+    <div class="page-header">
+        <h2>Продажи по событиям</h2>
+        <a href="{{ url_for('admin.reports_export', kind='sales') }}" class="btn">Экспорт в Excel</a>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Мероприятие</th>
+                <th>Дата</th>
+                <th>Мест</th>
+                <th>Продано</th>
+                <th>Заполн., %</th>
+                <th>Активных</th>
+                <th>Использ.</th>
+                <th>Возврат</th>
+                <th>Выручка</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in sales %}
+            <tr>
+                <td>{{ r.title }}</td>
+                <td>{{ r.starts_at | dt }}</td>
+                <td>{{ r.total_capacity }}</td>
+                <td>{{ r.sold_count }}</td>
+                <td>{{ r.fill_rate_pct or 0 }}</td>
+                <td>{{ r.tickets_active }}</td>
+                <td>{{ r.tickets_used }}</td>
+                <td>{{ r.tickets_cancelled }}</td>
+                <td>{{ r.revenue | money }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="report-section">
+    <div class="page-header">
+        <h2>Выручка по дням (за 30 дней)</h2>
+        <a href="{{ url_for('admin.reports_export', kind='revenue') }}" class="btn">Экспорт в Excel</a>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Билетов</th>
+                <th>Покупателей</th>
+                <th>Событий</th>
+                <th>Валовая</th>
+                <th>Возвраты</th>
+                <th>Чистая</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in revenue %}
+            <tr>
+                <td>{{ r.sale_date }}</td>
+                <td>{{ r.tickets_sold }}</td>
+                <td>{{ r.unique_buyers }}</td>
+                <td>{{ r.events_with_sales }}</td>
+                <td>{{ r.gross_revenue | money }}</td>
+                <td>{{ r.refunded_amount | money }}</td>
+                <td>{{ r.net_revenue | money }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="report-section">
+    <div class="page-header">
+        <h2>Активность дилеров</h2>
+        <a href="{{ url_for('admin.reports_export', kind='dealers') }}" class="btn">Экспорт в Excel</a>
+    </div>
+    {% if dealers %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Дилерский код</th>
+                <th>Организация</th>
+                <th>Сотрудников</th>
+                <th>Регистраций</th>
+                <th>Посещений</th>
+                <th>Возвратов</th>
+                <th>Уник. событий</th>
+                <th>Посещ., %</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in dealers %}
+            <tr>
+                <td><code>{{ d.dealer_code }}</code></td>
+                <td>{{ d.organization or '—' }}</td>
+                <td>{{ d.users_count }}</td>
+                <td>{{ d.tickets_total }}</td>
+                <td>{{ d.tickets_attended }}</td>
+                <td>{{ d.tickets_cancelled }}</td>
+                <td>{{ d.events_visited }}</td>
+                <td>{{ d.attendance_rate_pct }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><p>Дилеры пока не зарегистрированы.</p></div>
+    {% endif %}
+</section>
+
+<section class="report-section">
+    <div class="page-header">
+        <h2>Посещаемость</h2>
+        <a href="{{ url_for('admin.reports_export', kind='attendance') }}" class="btn">Экспорт в Excel</a>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Мероприятие</th>
+                <th>Дата</th>
+                <th>Билетов</th>
+                <th>Пришло</th>
+                <th>Не пришло</th>
+                <th>Посещ., %</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in attendance %}
+            <tr>
+                <td>{{ r.title }}</td>
+                <td>{{ r.starts_at | dt }}</td>
+                <td>{{ r.tickets_issued }}</td>
+                <td>{{ r.attended }}</td>
+                <td>{{ r.no_shows }}</td>
+                <td>{{ r.attendance_rate_pct }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
