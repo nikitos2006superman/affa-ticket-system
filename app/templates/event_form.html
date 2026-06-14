@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}{% if event %}Редактирование события{% else %}Новое событие{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{% if event %}Редактирование «{{ event.title }}»{% else %}Новое мероприятие{% endif %}</h1>
+
+<form method="post" class="form-grid">
+    <label class="full">
+        Название *
+        <input type="text" name="title" required maxlength="250" value="{{ event.title if event else '' }}">
+    </label>
+
+    <label class="full">
+        Описание
+        <textarea name="description" rows="4">{{ event.description if event else '' }}</textarea>
+    </label>
+
+    <label>
+        Дата и время начала *
+        <input type="datetime-local" name="starts_at" required
+               value="{{ event.starts_at.strftime('%Y-%m-%dT%H:%M') if event else '' }}">
+    </label>
+
+    <label>
+        Дата и время окончания *
+        <input type="datetime-local" name="ends_at" required
+               value="{{ event.ends_at.strftime('%Y-%m-%dT%H:%M') if event else '' }}">
+    </label>
+
+    <label>
+        Площадка
+        <select name="venue_id">
+            <option value="">— не выбрана —</option>
+            {% for v in venues %}
+            <option value="{{ v.venue_id }}"
+                {% if event and event.venue_id == v.venue_id %}selected{% endif %}>
+                {{ v.name }} ({{ v.city }}, до {{ v.capacity }} чел.)
+            </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>
+        Статус
+        <select name="status">
+            {% set cur = event.status if event else 'draft' %}
+            <option value="draft"     {% if cur=='draft'     %}selected{% endif %}>Черновик</option>
+            <option value="published" {% if cur=='published' %}selected{% endif %}>Опубликовано</option>
+            <option value="cancelled" {% if cur=='cancelled' %}selected{% endif %}>Отменено</option>
+            <option value="finished"  {% if cur=='finished'  %}selected{% endif %}>Завершено</option>
+        </select>
+    </label>
+
+    <label>
+        Вместимость *
+        <input type="number" name="total_capacity" min="1" required
+               value="{{ event.total_capacity if event else '' }}">
+    </label>
+
+    <label>
+        Цена билета, ₽
+        <input type="number" name="base_price" min="0" step="0.01"
+               value="{{ event.base_price if event else 0 }}">
+    </label>
+
+    <div class="form-actions full">
+        <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
+        <a href="{{ url_for('admin.events_list') }}" class="btn">Отмена</a>
+    </div>
+</form>
+{% endblock %}
