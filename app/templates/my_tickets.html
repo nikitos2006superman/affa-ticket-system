@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Мои регистрации{% endblock %}
+
+{% block content %}
+<h1>Мои регистрации</h1>
+
+{% if not tickets %}
+    <div class="empty-state">
+        <p>У вас пока нет регистраций. <a href="{{ url_for('public.index') }}">Перейти к списку мероприятий</a>.</p>
+    </div>
+{% else %}
+    <div class="ticket-list">
+        {% for t in tickets %}
+        <article class="ticket-card ticket-{{ t.status }}">
+            <div class="ticket-info">
+                <h3>{{ t.event_title }}</h3>
+                <div class="ticket-meta">
+                    <span>{{ t.starts_at | dt }}</span>
+                    {% if t.venue_name %}<span>· {{ t.venue_name }}</span>{% endif %}
+                </div>
+                <div class="ticket-status status-{{ t.status }}">
+                    {% if t.status == 'active' %}Зарегистрирован{% endif %}
+                    {% if t.status == 'used' %}Посетил{% if t.used_at %} · {{ t.used_at | dt }}{% endif %}{% endif %}
+                    {% if t.status == 'cancelled' %}Регистрация отменена{% endif %}
+                    {% if t.status == 'refunded' %}Возмещено{% endif %}
+                </div>
+                <div class="ticket-code">Код приглашения: <code>{{ t.ticket_code }}</code></div>
+
+                {% if t.status == 'active' and t.starts_at > now %}
+                <form method="post" action="{{ url_for('public.cancel_my_ticket', ticket_code=t.ticket_code) }}"
+                      onsubmit="return confirm('Отменить регистрацию?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Отменить регистрацию</button>
+                </form>
+                {% endif %}
+            </div>
+            {% if t.status == 'active' %}
+            <div class="ticket-qr">
+                <img src="{{ url_for('public.qr_image', ticket_code=t.ticket_code) }}" alt="QR-код приглашения">
+                <small>Покажите этот QR на входе</small>
+            </div>
+            {% endif %}
+        </article>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
