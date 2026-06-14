@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Все мероприятия{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Мероприятия</h1>
+    <a href="{{ url_for('admin.event_create') }}" class="btn btn-primary">+ Создать</a>
+</div>
+
+{% if not events %}
+    <div class="empty-state"><p>Список мероприятий пуст.</p></div>
+{% else %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Дата</th>
+            <th>Площадка</th>
+            <th>Места</th>
+            <th>Статус</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for e in events %}
+        <tr>
+            <td><a href="{{ url_for('public.event_detail', event_id=e.event_id) }}">{{ e.title }}</a></td>
+            <td>{{ e.starts_at | dt }}</td>
+            <td>{{ e.venue_name or '—' }}</td>
+            <td>{{ e.sold_count }} / {{ e.total_capacity }}</td>
+            <td><span class="badge badge-{{ e.status }}">{{ e.status }}</span></td>
+            <td class="row-actions">
+                <a href="{{ url_for('admin.event_edit', event_id=e.event_id) }}">Редакт.</a>
+                <form method="post" action="{{ url_for('admin.event_delete', event_id=e.event_id) }}"
+                      onsubmit="return confirm('Удалить мероприятие? Все связанные билеты также будут удалены.');"
+                      style="display:inline">
+                    <button type="submit" class="link-btn link-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
