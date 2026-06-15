@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: affa-ticket-system
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python init_db.py && gunicorn run:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: affa-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: affa-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: affa-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: affa-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: affa-db
+          property: password
+
+  - type: postgresql
+    name: affa-db
+    plan: free
